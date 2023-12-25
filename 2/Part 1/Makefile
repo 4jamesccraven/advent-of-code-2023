@@ -1,4 +1,4 @@
-exe = cubeGame.exe
+exe = cubeGameTwo.exe
 
 CXX = g++
 CXXFlags = -std=c++17 -I$(INCDIR) -Wall -pedantic
