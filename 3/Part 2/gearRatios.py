@@ -59,7 +59,7 @@ class grid:
                 top_one = self.locate_entire_number(x, y - 1)
             else:
                 if x != 0 and self.internal_grid[y - 1][x - 1].isdigit():
-                    top_two = self.locate_entire_number(x - 1, y - 1)
+                    top_one = self.locate_entire_number(x - 1, y - 1)
                 if x !=(self.height - 1) and self.internal_grid[y - 1][x + 1].isdigit():
                     top_two = self.locate_entire_number(x + 1, y - 1)
 
