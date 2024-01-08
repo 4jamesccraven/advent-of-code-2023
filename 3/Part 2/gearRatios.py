@@ -83,7 +83,6 @@ class grid:
             for star in line:
                 numbers.append(self.find_numbers_around_star(star, idx))
 
-        print(len(numbers))
         numbers = [num for num in numbers if len(num) == 2]
         print(len(numbers))
         return [num[0] * num[1] for num in numbers]
