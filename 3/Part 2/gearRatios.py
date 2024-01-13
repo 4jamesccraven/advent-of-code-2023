@@ -1,5 +1,3 @@
-#This code doesn't work, it falls just short of what it's supposed to find. I'll debug it in the futurem, perhaps.
-
 import sys
 
 class grid:
