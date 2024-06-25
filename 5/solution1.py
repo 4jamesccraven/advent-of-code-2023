@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 SeedMap = Dict[Tuple[str, str], List[Tuple[int, int, int]]]
 
 
-def parse_file(filename: str) -> SeedMap:
+def parse_file(filename: str) -> Tuple[SeedMap, List[int]]:
     try:
         with open(filename, 'r') as f:
             lines: List[str] = [line for line in f]
