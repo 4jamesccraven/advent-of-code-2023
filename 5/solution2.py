@@ -1,4 +1,3 @@
-# THIS SOLUTION IS INCOMPLETE
 import argparse
 import solution1
 from typing import List, Tuple
@@ -15,6 +14,24 @@ def parse_seed_ranges(seeds: List[int]) -> List[Tuple[int, int]]:
     return r_val
 
 
+def map_val(value: int,
+            seed_map: solution1.SeedMap,
+            source_type: str) -> Tuple[int, str]:
+    '''
+    Maps a value one level of depth into the Seedmap
+    '''
+    _, map_to = next(filter(lambda x: x[0] == source_type, seed_map))
+
+    next_map = seed_map[(source_type, map_to)]
+
+    for dest, source, length in next_map:
+        source_upper = source + length
+        if source <= value and value < source_upper:
+            return dest + (value - source)
+    else:
+        return value, map_to
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help='Input file')
@@ -22,11 +39,6 @@ def main() -> None:
 
     seed_map, no_fmt_seeds = solution1.parse_file(args.file)
     seeds = parse_seed_ranges(no_fmt_seeds)
-
-    seeds = [tuple(solution1.cascading_search(x, seed_map) for x in val)
-             for val in seeds]
-
-    print(min(seeds, key=lambda x: x[0]))
 
 
 if __name__ == '__main__':
