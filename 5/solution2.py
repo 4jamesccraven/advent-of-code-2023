@@ -14,22 +14,46 @@ def parse_seed_ranges(seeds: List[int]) -> List[Tuple[int, int]]:
     return r_val
 
 
-def map_val(value: int,
-            seed_map: solution1.SeedMap,
-            source_type: str) -> Tuple[int, str]:
-    '''
-    Maps a value one level of depth into the Seedmap
-    '''
-    _, map_to = next(filter(lambda x: x[0] == source_type, seed_map))
-
-    next_map = seed_map[(source_type, map_to)]
-
-    for dest, source, length in next_map:
-        source_upper = source + length
-        if source <= value and value < source_upper:
-            return dest + (value - source)
+def map_val(val: int,
+            mapper: List[Tuple[int, int, int]]) -> int:
+    for dest, source, length in mapper:
+        if source <= val and val < (source + length):
+            return dest + (val - source)
     else:
-        return value, map_to
+        return val
+
+
+def break_range(vals: Tuple[int, int],
+                map: List[Tuple[int, int, int]]) -> List[Tuple[int, int]]:
+    ...
+
+
+def solve(seed_map: solution1.SeedMap,
+          ranges: List[Tuple[int, int]]) -> int:
+    data_type = 'seed'
+
+    while data_type != 'location':
+        next_map = next(filter(lambda x: x[0] == data_type, seed_map))
+        data_type = next_map[1]
+        next_map = seed_map[next_map]
+        new_ranges = []
+
+        for r in ranges:
+            x, y = r
+            x_0 = map_val(x, next_map)
+            y_0 = map_val(y, next_map)
+
+            if y_0 - x_0 == y - x:
+                new_ranges.append((x_0, y_0))
+
+            else:
+                for br in break_range(r, next_map):
+                    new_ranges.append(br)
+
+        ranges = new_ranges
+
+    ranges = [r[0] for r in ranges]
+    return min(ranges)
 
 
 def main() -> None:
@@ -39,6 +63,8 @@ def main() -> None:
 
     seed_map, no_fmt_seeds = solution1.parse_file(args.file)
     seeds = parse_seed_ranges(no_fmt_seeds)
+
+    print(solve(seed_map, seeds))
 
 
 if __name__ == '__main__':
